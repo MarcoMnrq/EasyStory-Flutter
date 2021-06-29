@@ -70,7 +70,8 @@ class _PostRowState extends State<PostRow> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ViewPostPage(
-                          post: widget.post,
+                          postId: widget.post.id,
+                          authorId: widget.post.userId,
                         ),
                       ),
                     );

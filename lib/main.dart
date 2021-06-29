@@ -1,4 +1,4 @@
-import 'package:easystory/screens/add_post.dart';
+import 'package:easystory/screens/add_post_page.dart';
 import 'package:easystory/screens/home_page.dart';
 import 'package:easystory/screens/login_page.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         'login': (BuildContext context) => LoginPage(),
         'home': (BuildContext context) => HomePage(),
-        'post': (BuildContext context) => AddPost(),
+        'post': (BuildContext context) => AddPostPage(),
       },
     );
   }
