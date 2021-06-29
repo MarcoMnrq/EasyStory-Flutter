@@ -21,6 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _ProfileDetails(Profile profile){
     return Text(profile.firstName);
+    
   }
 
   @override
@@ -28,17 +29,17 @@ class _ProfilePageState extends State<ProfilePage> {
     return FutureBuilder<Profile>(
     future: userProfile,
     builder: (context, snapshot) {
-    if (snapshot.hasData) {
-      var user = snapshot.data! as Profile;
+        if (snapshot.hasData) {
+          var user = snapshot.data! as Profile;
 
-      return _ProfileDetails(user);
-    } else if (snapshot.hasError) {
-      return Text("${snapshot.error}");
-    }
-    // By default, show a loading spinner.
-    return CircularProgressIndicator();
-  },
-);
+          return _ProfileDetails(user);
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+        // By default, show a loading spinner.
+        return CircularProgressIndicator();
+      },
+    );
     /*
     return Scaffold(
       appBar: AppBar(

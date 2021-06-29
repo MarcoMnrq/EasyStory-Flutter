@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:easystory/models/profile.dart';
 import 'package:http/http.dart' as http;
-import 'package:easystory/models/post.dart';
 
 class ProfileProvider {
   Future<String> getAuthToken() async {
