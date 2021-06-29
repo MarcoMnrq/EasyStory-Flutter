@@ -1,4 +1,3 @@
-import 'package:easystory/screens/add_post.dart';
 import 'package:easystory/screens/add_post_page.dart';
 import 'package:easystory/screens/bookmars_page.dart';
 import 'package:easystory/screens/feed_page.dart';
