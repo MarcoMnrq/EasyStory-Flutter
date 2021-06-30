@@ -10,24 +10,53 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  late Future<List?> itemsList;
+  late Future<List> itemsList;
   final postsProvider = new PostsProvider();
+  List searchResult = [];
+  List resultTemporal = [];
+  String title = "";
 
   @override
   Widget build(BuildContext context) {
-    return _postsList();
+    return Scaffold(
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              decoration: InputDecoration(hintText: "Titulo"),
+              onChanged: (value) async {
+                title = value;
+                print(title);
+                setState(() {});
+              },
+            ),
+            Flexible(child: _postsList(title)),
+          ],
+        ),
+      ),
+    );
   }
 
-  Widget _postsList() {
-    return FutureBuilder<List?>(
+  Widget _postsList(String value) {
+    return FutureBuilder<List>(
       future: postsProvider.getAll('posts'),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ListView.builder(
-              itemCount: snapshot.data?.length,
-              itemBuilder: (BuildContext context, int index) {
-                return PostRow(snapshot.data?[index]);
-              });
+          final resultTemporal = snapshot.data;
+          if (value == "") {
+            return _postResult(resultTemporal!);
+          } else {
+            searchResult.clear();
+            for (var i = 0; i < resultTemporal!.length; i++) {
+              String data = resultTemporal[i].title;
+              if (data.toLowerCase().contains(value.toLowerCase())) {
+                searchResult.add(resultTemporal[i]);
+              }
+            }
+            return _postResult(searchResult);
+          }
         } else if (snapshot.hasError) {
           Text('${snapshot.error}');
         }
@@ -36,6 +65,14 @@ class _FeedPageState extends State<FeedPage> {
         );
       },
     );
+  }
+
+  Widget _postResult(List result) {
+    return ListView.builder(
+        itemCount: result.length,
+        itemBuilder: (BuildContext context, int index) {
+          return PostRow(result[index]);
+        });
   }
 }
 
