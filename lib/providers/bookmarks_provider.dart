@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:easystory/models/bookmark.dart';
-import 'package:easystory/models/user.dart';
 import 'package:http/http.dart' as http;
-import 'package:easystory/models/post.dart';
 
 class BookmarksProvider {
   Future<String> getAuthToken() async {

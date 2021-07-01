@@ -2,7 +2,6 @@ import 'package:easystory/models/bookmark.dart';
 import 'package:easystory/models/post.dart';
 import 'package:easystory/models/user.dart';
 import 'package:easystory/providers/posts_provider.dart';
-import 'package:easystory/screens/bookmars_page.dart';
 import 'package:easystory/screens/view_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +101,6 @@ class _ViewPostPageState extends State<ViewPostPage> {
       future: bookmark,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          var obj = snapshot.data!;
           return ElevatedButton.icon(
               onPressed: () {
                 // Eliminar de bookmark
@@ -125,8 +123,6 @@ class _ViewPostPageState extends State<ViewPostPage> {
               icon: Icon(Icons.bookmark_add),
               label: Text('Guardar'));
         }
-        // By default, show a loading spinner.
-        return Center(child: CircularProgressIndicator());
       },
     );
   }

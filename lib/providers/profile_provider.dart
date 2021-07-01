@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:easystory/models/profile.dart';
 import 'package:http/http.dart' as http;
 
@@ -7,12 +6,11 @@ class ProfileProvider {
   Future<String> getAuthToken() async {
     final requestUrl = "https://easystory-api.herokuapp.com/api/";
     http.Response auth = await http.post(Uri.parse(requestUrl + "auth/sign-in"),
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    },
-    body: json.encode({'username': 'admin', 'password': 'admin'})
-    );
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: json.encode({'username': 'admin', 'password': 'admin'}));
     return (json.decode(auth.body))['token'];
   }
 
@@ -29,7 +27,7 @@ class ProfileProvider {
       },
     );
 
-  print(result);
+    print(result);
     final jsonResponse = json.decode(result.body);
     return Profile.fromJson(jsonResponse);
   }

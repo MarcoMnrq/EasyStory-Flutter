@@ -38,10 +38,6 @@ class Post {
       );
 
   Map<String, dynamic> toJson() => {
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "id": id,
-        "userId": userId,
         "title": title,
         "description": description,
         "content": content,

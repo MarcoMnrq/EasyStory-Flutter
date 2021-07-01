@@ -10,8 +10,15 @@ class AddPostPage extends StatefulWidget {
 
 class _AddPostPageState extends State<AddPostPage> {
   PostsProvider postsProvider = new PostsProvider();
-  final TextEditingController _controller = TextEditingController();
-  Future<Post>? _futurePost;
+
+  Post post = new Post(
+      id: 3,
+      content: '',
+      title: '',
+      createdAt: new DateTime(2020),
+      updatedAt: new DateTime(2020),
+      description: '',
+      userId: 3);
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +29,23 @@ class _AddPostPageState extends State<AddPostPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           TextField(
-            controller: _controller,
-            decoration: InputDecoration(hintText: 'Enter Title'),
+            onChanged: (value) => {post.title = value},
+            decoration: InputDecoration(hintText: 'Título'),
+          ),
+          TextField(
+            onChanged: (value) => {post.description = value},
+            decoration: InputDecoration(hintText: 'Descripción'),
+          ),
+          TextField(
+            onChanged: (value) => {post.content = value},
+            decoration: InputDecoration(hintText: 'Contentenido'),
           ),
           ElevatedButton(
             onPressed: () {
-              setState(() {
-                _futurePost = postsProvider.create(_controller.text);
-              });
+              print(post.toJson());
+              postsProvider.create('users/1/posts', post.toJson());
             },
-            child: Text('Create Data'),
+            child: Text('Publicar post'),
           ),
         ],
       ),

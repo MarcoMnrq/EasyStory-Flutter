@@ -2,7 +2,6 @@ import 'package:easystory/models/bookmark.dart';
 import 'package:easystory/models/post.dart';
 import 'package:easystory/providers/bookmarks_provider.dart';
 import 'package:easystory/providers/posts_provider.dart';
-import 'package:easystory/utils/http_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -96,7 +95,6 @@ class _BookmarkRowState extends State<BookmarkRow> {
               ],
             ),
           ));
-          ;
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }

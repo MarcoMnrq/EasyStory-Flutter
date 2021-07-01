@@ -17,17 +17,18 @@ class PostsProvider {
     return (json.decode(auth.body))['token'];
   }
 
-  Future<Post> create(String urlOption) async {
+  Future<Post> create(String urlOption, Map<String, dynamic> payload) async {
     final requestUrl = "https://easystory-api.herokuapp.com/api/";
     final url = Uri.parse(requestUrl + urlOption);
     final token = await getAuthToken();
-    http.Response result = await http.get(
+    http.Response result = await http.post(
       url,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
       },
+      body: jsonEncode(payload),
     );
     if (result.statusCode == HttpStatus.ok) {
       final jsonResponse = json.decode(result.body);
