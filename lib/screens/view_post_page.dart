@@ -1,6 +1,7 @@
 import 'package:easystory/models/bookmark.dart';
 import 'package:easystory/models/post.dart';
 import 'package:easystory/models/user.dart';
+import 'package:easystory/models/qualification.dart';
 import 'package:easystory/providers/posts_provider.dart';
 import 'package:easystory/screens/edit_post.dart';
 import 'package:easystory/screens/feed_page.dart';
@@ -13,8 +14,11 @@ class ViewPostPage extends StatefulWidget {
   final int postId;
   final int authorId;
 
-  ViewPostPage({Key? key, required this.postId, required this.authorId})
-      : super(key: key);
+  ViewPostPage({
+    Key? key,
+    required this.postId,
+    required this.authorId,
+  }) : super(key: key);
 
   @override
   _ViewPostPageState createState() => _ViewPostPageState();
@@ -26,6 +30,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
   late Future<Post> post;
   late Future<User> author;
   late Future<Bookmark?> bookmark;
+  late Future<Qualification> qualification;
 
   @override
   void initState() {
@@ -34,6 +39,8 @@ class _ViewPostPageState extends State<ViewPostPage> {
     author = postsProvider.getAuthor('users/', widget.authorId);
     bookmark = postsProvider.getBookmark(
         'users/1/posts/' + widget.postId.toString() + '/bookmarks');
+    qualification = postsProvider.getQualification(
+        'users/1/posts/' + widget.postId.toString() + '/qualifications');
   }
 
   FutureBuilder<User> _getAuthor() {
@@ -59,6 +66,32 @@ class _ViewPostPageState extends State<ViewPostPage> {
                     );
                   },
                   child: Text('Autor: ' + obj.firstName + ' ' + obj.lastName)),
+              const SizedBox(height: 30),
+            ],
+          );
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+        // By default, show a loading spinner.
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  FutureBuilder<Qualification> _getQualification() {
+    return FutureBuilder<Qualification>(
+      future: qualification,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          var obj = snapshot.data!;
+          // Post body
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              ElevatedButton(
+                  onPressed: () {},
+                  child: Text('Nota: ' + obj.qualification.toString())),
               const SizedBox(height: 30),
             ],
           );
@@ -134,6 +167,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
               Text('Descripción: ' + obj.description),
               const SizedBox(height: 30),
               Text('Contenido: ' + obj.content),
+              _getQualification(),
               _getAuthor(),
               _deletePost(),
               _editPost(),

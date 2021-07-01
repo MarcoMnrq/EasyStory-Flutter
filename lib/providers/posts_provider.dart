@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:easystory/models/bookmark.dart';
+import 'package:easystory/models/qualification.dart';
 import 'package:easystory/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:easystory/models/post.dart';
@@ -218,6 +219,26 @@ class PostsProvider {
       final arrayMap = jsonResponse['content'];
       List items = arrayMap.map((map) => Comment.fromJson(map)).toList();
       return items;
+    } else {
+      throw Exception('Failed request');
+    }
+  }
+
+  Future<Qualification> getQualification(String urlOption) async {
+    final requestUrl = "https://easystory-api.herokuapp.com/api/";
+    final url = Uri.parse(requestUrl + urlOption);
+    final token = await getAuthToken();
+    http.Response result = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (result.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(result.body);
+      return Qualification.fromJson(jsonResponse);
     } else {
       throw Exception('Failed request');
     }

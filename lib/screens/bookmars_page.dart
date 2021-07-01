@@ -86,8 +86,9 @@ class _BookmarkRowState extends State<BookmarkRow> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ViewPostPage(
-                                      postId: widget.bookmark.postId,
-                                      authorId: widget.bookmark.userId)));
+                                        postId: widget.bookmark.postId,
+                                        authorId: widget.bookmark.userId,
+                                      ))); //ACA
                         },
                         child: const Text('Ver Publicación')),
                   ],
