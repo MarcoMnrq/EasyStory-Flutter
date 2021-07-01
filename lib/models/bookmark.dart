@@ -4,8 +4,6 @@ import 'dart:convert';
 //
 //     final bookmark = bookmarkFromJson(jsonString);
 
-import 'dart:convert';
-
 Bookmark bookmarkFromJson(String str) => Bookmark.fromJson(json.decode(str));
 
 String bookmarkToJson(Bookmark data) => json.encode(data.toJson());

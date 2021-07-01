@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:easystory/models/hashtag.dart';
+import 'package:easystory/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:easystory/models/post.dart';
 
@@ -74,6 +75,26 @@ class HttpHelper {
       final moviesMap = jsonResponse['content'];
       List movies = moviesMap.map((map) => Post.fromJson(map)).toList();
       return movies;
+    }
+  }
+
+  Future<User> getUser(String urlOption) async {
+    final requestUrl = "https://easystory-api.herokuapp.com/api/users/";
+    final url = Uri.parse(requestUrl + urlOption);
+    final token = await getAuthToken();
+    http.Response result = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (result.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(result.body);
+      return User.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed request');
     }
   }
 }

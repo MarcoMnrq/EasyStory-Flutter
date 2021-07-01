@@ -1,6 +1,7 @@
 import 'package:easystory/models/post.dart';
 import 'package:easystory/models/user.dart';
 import 'package:easystory/providers/posts_provider.dart';
+import 'package:easystory/screens/view_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +29,41 @@ class _ViewPostPageState extends State<ViewPostPage> {
     author = postsProvider.getAuthor('users/', widget.authorId);
   }
 
+  FutureBuilder<User> _getAuthor() {
+    return FutureBuilder<User>(
+      future: author,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          var obj = snapshot.data!;
+          // Post body
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewProfile(
+                          userId: obj.id,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text('Autor: ' + obj.firstName + ' ' + obj.lastName)),
+              const SizedBox(height: 30),
+            ],
+          );
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+        // By default, show a loading spinner.
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
   FutureBuilder<Post> _getPost() {
     return FutureBuilder<Post>(
       future: post,
@@ -44,6 +80,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
               Text('Descripción: ' + obj.description),
               const SizedBox(height: 30),
               Text('Contenido: ' + obj.content),
+              _getAuthor(),
             ],
           );
         } else if (snapshot.hasError) {
