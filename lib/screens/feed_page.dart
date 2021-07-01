@@ -93,33 +93,36 @@ class _PostRowState extends State<PostRow> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(Icons.book),
+              //leading: Icon(Icons.book),
               title: Text(widget.post.title),
               subtitle: Text(widget.post.description),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                TextButton(
-                  child: const Text('VER PUBLICACIÓN'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ViewPostPage(
-                          postId: widget.post.id,
-                          authorId: widget.post.userId,
-                        ),
-                      ),
-                    );
-                  },
+              trailing: FittedBox(
+                fit: BoxFit.fill,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    TextButton(
+                      child: const Text('Ver'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewPostPage(
+                              postId: widget.post.id,
+                              authorId: widget.post.userId,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          deletePost(context, widget.post.id);
+                        },
+                        child: const Text('Eliminar')),
+                  ],
                 ),
-                TextButton(
-                    onPressed: () {
-                      deletePost(context, widget.post.id);
-                    },
-                    child: const Text('Eliminar')),
-              ],
+              ),
             ),
           ],
         ),

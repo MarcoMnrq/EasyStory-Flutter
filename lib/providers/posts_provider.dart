@@ -4,6 +4,7 @@ import 'package:easystory/models/bookmark.dart';
 import 'package:easystory/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:easystory/models/post.dart';
+import 'package:easystory/models/comment.dart';
 
 class PostsProvider {
   Future<String> getAuthToken() async {
@@ -195,6 +196,28 @@ class PostsProvider {
     if (result.statusCode == HttpStatus.ok) {
       final jsonResponse = json.decode(result.body);
       return User.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed request');
+    }
+  }
+
+  Future<List> getComments(String urlOption) async {
+    final requestUrl = "https://easystory-api.herokuapp.com/api/";
+    final url = Uri.parse(requestUrl + urlOption);
+    final token = await getAuthToken();
+    http.Response result = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (result.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(result.body);
+      final arrayMap = jsonResponse['content'];
+      List items = arrayMap.map((map) => Comment.fromJson(map)).toList();
+      return items;
     } else {
       throw Exception('Failed request');
     }

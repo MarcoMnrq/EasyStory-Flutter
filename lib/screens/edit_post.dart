@@ -52,6 +52,7 @@ class _EditPostPageState extends State<EditPostPage> {
                     postsProvider.update(
                         'users/1/posts/' + widget.postId.toString(),
                         post.toJson());
+                    Navigator.pop(context);
                   },
                   child: Text('Actualizar post'),
                 )
