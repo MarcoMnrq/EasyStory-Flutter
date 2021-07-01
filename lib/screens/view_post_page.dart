@@ -2,6 +2,8 @@ import 'package:easystory/models/bookmark.dart';
 import 'package:easystory/models/post.dart';
 import 'package:easystory/models/user.dart';
 import 'package:easystory/providers/posts_provider.dart';
+import 'package:easystory/screens/feed_page.dart';
+import 'package:easystory/screens/home_page.dart';
 import 'package:easystory/screens/view_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +70,29 @@ class _ViewPostPageState extends State<ViewPostPage> {
     );
   }
 
+  Widget _deletePost() {
+    return FutureBuilder<Post>(
+        future: post,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                      onPressed: () {
+                        postsProvider.deletePost(
+                            'users/1/posts/' + widget.postId.toString());
+                        Navigator.pop(context);
+                      },
+                      child: Text('Borrar post'))
+                ]);
+          } else {
+            return Text("Uy");
+          }
+        });
+  }
+
   FutureBuilder<Post> _getPost() {
     return FutureBuilder<Post>(
       future: post,
@@ -85,6 +110,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
               const SizedBox(height: 30),
               Text('Contenido: ' + obj.content),
               _getAuthor(),
+              _deletePost(),
             ],
           );
         } else if (snapshot.hasError) {
@@ -108,7 +134,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
                     'users/1/posts/' + widget.postId.toString() + '/bookmarks');
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.bookmark),
+              icon: Icon(Icons.bookmark_border_sharp),
               label: Text('Guardado'));
         } else if (snapshot.hasError) {
           return Text("Uy");
@@ -120,7 +146,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
                     'users/1/posts/' + widget.postId.toString() + '/bookmarks');
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.bookmark),
+              icon: Icon(Icons.bookmark_border_sharp),
               label: Text('Guardar'));
         }
       },

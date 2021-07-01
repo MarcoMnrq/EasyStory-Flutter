@@ -38,6 +38,27 @@ class PostsProvider {
     }
   }
 
+  Future<Post> update(String urlOption, Map<String, dynamic> payload) async {
+    final requestUrl = "https://easystory-api.herokuapp.com/api/";
+    final url = Uri.parse(requestUrl + urlOption);
+    final token = await getAuthToken();
+    http.Response result = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(payload),
+    );
+    if (result.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(result.body);
+      return Post.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed request');
+    }
+  }
+
   Future<Bookmark?> getBookmark(String urlOption) async {
     final requestUrl = "https://easystory-api.herokuapp.com/api/";
     final url = Uri.parse(requestUrl + urlOption);
@@ -78,6 +99,26 @@ class PostsProvider {
   }
 
   Future<bool> deleteBookmark(String urlOption) async {
+    final requestUrl = "https://easystory-api.herokuapp.com/api/";
+    final url = Uri.parse(requestUrl + urlOption);
+    final token = await getAuthToken();
+    http.Response result = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, String>{}),
+    );
+    if (result.statusCode == HttpStatus.ok) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> deletePost(String urlOption) async {
     final requestUrl = "https://easystory-api.herokuapp.com/api/";
     final url = Uri.parse(requestUrl + urlOption);
     final token = await getAuthToken();
