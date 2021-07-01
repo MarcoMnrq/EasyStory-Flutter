@@ -114,6 +114,11 @@ class _PostRowState extends State<PostRow> {
                     );
                   },
                 ),
+                TextButton(
+                    onPressed: () {
+                      deletePost(context, widget.post.id);
+                    },
+                    child: const Text('Eliminar')),
               ],
             ),
           ],
@@ -121,4 +126,10 @@ class _PostRowState extends State<PostRow> {
       ),
     );
   }
+}
+
+void deletePost(BuildContext context, int id) async {
+  final postsProvider = new PostsProvider();
+  late Future<Post> post = postsProvider.getOne('posts', id);
+  print(await post);
 }

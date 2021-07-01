@@ -97,6 +97,26 @@ class PostsProvider {
     }
   }
 
+  Future<bool> deletePost(String urlOption) async {
+    final requestUrl = "https://easystory-api.herokuapp.com/api/";
+    final url = Uri.parse(requestUrl + urlOption);
+    final token = await getAuthToken();
+    http.Response result = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, String>{}),
+    );
+    if (result.statusCode == HttpStatus.ok) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<List> getAll(String urlOption) async {
     final requestUrl = "https://easystory-api.herokuapp.com/api/";
     final url = Uri.parse(requestUrl + urlOption);
