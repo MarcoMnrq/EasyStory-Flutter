@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:easystory/models/bookmark.dart';
 import 'package:easystory/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:easystory/models/post.dart';
@@ -33,6 +34,65 @@ class PostsProvider {
       return Post.fromJson(jsonResponse);
     } else {
       throw Exception('Failed request');
+    }
+  }
+
+  Future<Bookmark?> getBookmark(String urlOption) async {
+    final requestUrl = "https://easystory-api.herokuapp.com/api/";
+    final url = Uri.parse(requestUrl + urlOption);
+    final token = await getAuthToken();
+    http.Response result = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (result.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(result.body);
+      return Bookmark.fromJson(jsonResponse);
+    }
+  }
+
+  Future<Bookmark?> addBookmark(String urlOption) async {
+    final requestUrl = "https://easystory-api.herokuapp.com/api/";
+    final url = Uri.parse(requestUrl + urlOption);
+    final token = await getAuthToken();
+    http.Response result = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, String>{}),
+    );
+    if (result.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(result.body);
+      return Bookmark.fromJson(jsonResponse);
+    } else {
+      print(result.body);
+    }
+  }
+
+  Future<bool> deleteBookmark(String urlOption) async {
+    final requestUrl = "https://easystory-api.herokuapp.com/api/";
+    final url = Uri.parse(requestUrl + urlOption);
+    final token = await getAuthToken();
+    http.Response result = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, String>{}),
+    );
+    if (result.statusCode == HttpStatus.ok) {
+      return true;
+    } else {
+      return false;
     }
   }
 
