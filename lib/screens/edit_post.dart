@@ -1,6 +1,5 @@
 import 'package:easystory/models/post.dart';
 import 'package:easystory/providers/posts_provider.dart';
-import 'package:easystory/screens/view_post_page.dart';
 import 'package:flutter/material.dart';
 
 class EditPostPage extends StatefulWidget {
@@ -14,8 +13,10 @@ class EditPostPage extends StatefulWidget {
 
 class _EditPostPageState extends State<EditPostPage> {
   PostsProvider postsProvider = new PostsProvider();
+  late Future<Post> previousPage =
+      postsProvider.getOne('posts/', widget.postId);
   Post post = new Post(
-      id: 3,
+      id: 1,
       content: '',
       title: '',
       createdAt: new DateTime(2020),
@@ -23,36 +24,51 @@ class _EditPostPageState extends State<EditPostPage> {
       description: '',
       userId: 3);
 
+  FutureBuilder<Post> _getEditPost() {
+    return FutureBuilder<Post>(
+        future: previousPage,
+        builder: (context, snapshot) {
+          return Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                TextField(
+                  onChanged: (value) => {post.title = value},
+                  decoration: InputDecoration(hintText: 'Titulo'),
+                ),
+                TextField(
+                  onChanged: (value) => {post.description = value},
+                  decoration: InputDecoration(hintText: 'Description'),
+                ),
+                TextField(
+                  onChanged: (value) => {post.content = value},
+                  decoration: InputDecoration(hintText: 'Contenido'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    print(post.toJson());
+                    postsProvider.update(
+                        'users/1/posts/' + widget.postId.toString(),
+                        post.toJson());
+                  },
+                  child: Text('Actualizar post'),
+                )
+              ],
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          TextField(
-            onChanged: (value) => {post.title = value},
-            decoration: InputDecoration(hintText: 'Titulo'),
-          ),
-          TextField(
-            onChanged: (value) => {post.description = value},
-            decoration: InputDecoration(hintText: 'Description'),
-          ),
-          TextField(
-            onChanged: (value) => {post.content = value},
-            decoration: InputDecoration(hintText: 'Contenido'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              print(post.toJson());
-              postsProvider.update(
-                  'users/1/posts/' + widget.postId.toString(), post.toJson());
-            },
-            child: Text('Actualizar post'),
-          )
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Edit Post'),
       ),
+      body: _getEditPost(),
     );
   }
 }

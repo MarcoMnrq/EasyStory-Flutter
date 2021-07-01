@@ -2,6 +2,7 @@ import 'package:easystory/models/bookmark.dart';
 import 'package:easystory/models/post.dart';
 import 'package:easystory/models/user.dart';
 import 'package:easystory/providers/posts_provider.dart';
+import 'package:easystory/screens/edit_post.dart';
 import 'package:easystory/screens/feed_page.dart';
 import 'package:easystory/screens/home_page.dart';
 import 'package:easystory/screens/view_profile.dart';
@@ -93,6 +94,30 @@ class _ViewPostPageState extends State<ViewPostPage> {
         });
   }
 
+  Widget _editPost() {
+    return FutureBuilder<Post>(
+        future: post,
+        builder: (context, snapshot) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(height: 10),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EditPostPage(postId: widget.postId),
+                      ),
+                    );
+                  },
+                  child: const Text('Editar Post'))
+            ],
+          );
+        });
+  }
+
   FutureBuilder<Post> _getPost() {
     return FutureBuilder<Post>(
       future: post,
@@ -111,6 +136,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
               Text('Contenido: ' + obj.content),
               _getAuthor(),
               _deletePost(),
+              _editPost(),
             ],
           );
         } else if (snapshot.hasError) {
