@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:easystory/models/profile.dart';
 import 'package:http/http.dart' as http;
+
 
 class ProfileProvider {
   Future<String> getAuthToken() async {
@@ -26,9 +28,32 @@ class ProfileProvider {
         'Authorization': 'Bearer $token',
       },
     );
-
+  
     print(result);
     final jsonResponse = json.decode(result.body);
     return Profile.fromJson(jsonResponse);
   }
+
+  Future<Profile> update(String urlOption, Map<String, dynamic> payload) async {
+    final requestUrl = "https://easystory-api.herokuapp.com/api/";
+    final url = Uri.parse(requestUrl + urlOption);
+    final token = await getAuthToken();
+    http.Response result = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(payload),
+    );
+    if (result.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(result.body);
+      return Profile.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed request');
+    }
+  }
+
+
 }

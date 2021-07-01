@@ -37,13 +37,14 @@ class Profile {
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
+        //"id": id,
         "username": username,
+        "password": "admin",
         "firstName": firstName,
         "lastName": lastName,
         "email": email,
         "telephone": telephone,
-        "subscribers": subscribers,
-        "subscriptions": subscriptions,
+        //"subscribers": subscribers,
+        //"subscriptions": subscriptions,
     };
 }
