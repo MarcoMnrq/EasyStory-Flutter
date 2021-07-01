@@ -108,7 +108,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
                     'users/1/posts/' + widget.postId.toString() + '/bookmarks');
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.bookmark_added),
+              icon: Icon(Icons.bookmark),
               label: Text('Guardado'));
         } else if (snapshot.hasError) {
           return Text("Uy");
@@ -120,7 +120,7 @@ class _ViewPostPageState extends State<ViewPostPage> {
                     'users/1/posts/' + widget.postId.toString() + '/bookmarks');
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.bookmark_add),
+              icon: Icon(Icons.bookmark),
               label: Text('Guardar'));
         }
       },
